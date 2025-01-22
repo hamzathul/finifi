@@ -39,7 +39,7 @@ const Sidebar = () => {
       <div>
         {/* Logo Section */}
         <div className="p-6">
-          <Image src="/f2.png" alt="finifi logo" width={150} height={150} />
+          <Image src="/f2.png" alt="finifi logo" width={120} height={150} />
         </div>
 
         {/* Navigation Section */}
