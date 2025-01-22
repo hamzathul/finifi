@@ -5,6 +5,9 @@ import Searchbar from "@/components/Searchbar";
 import { Invoice } from "@/types/invoice";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CreateInvoiceModal from "@/components/CreateInvoiceModal";
+import InvoiceTable from "@/components/InvoiceTable";
 
 export default function Home() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -15,6 +18,8 @@ export default function Home() {
   const [searchFilter, setSearchFilter] = useState<
     "vendorName" | "invoiceNumber"
   >("vendorName");
+
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const sampleInvoices: Invoice[] = [
@@ -69,6 +74,18 @@ export default function Home() {
     setSearchFilter(filter);
   };
 
+  const handleCreateInvoice = (newInvoice: Omit<Invoice, "id">) => {
+    const invoiceWithId = {
+      ...newInvoice,
+      id: Math.random().toString(36).substr(2, 9), // Generate random ID (replace with proper ID generation)
+    };
+    setInvoices((prev) => [...prev, invoiceWithId]);
+  };
+
+  const handleDeleteInvoice = (id: string) => {
+    setInvoices((prev) => prev.filter((invoice) => invoice.id !== id));
+  };
+
   return (
     <div className="">
       <Header />
@@ -76,8 +93,29 @@ export default function Home() {
         selectedStatus={selectedStatus}
         onStatusChange={setSelectedStatus}
       />
-      <Searchbar onSearch={handleSearch} />
-      
+      <div className="flex justify-between pt-5 px-7 mr-10">
+        <Searchbar onSearch={handleSearch} />
+        <button
+          onClick={() => setModalOpen(true)}
+          className="px-7 py-1 bg-sky-900 text-white rounded-lg hover:bg-sky-700 font-semibold"
+        >
+          Actions
+          <ExpandMoreIcon className="h-4 w-4 font-semibold ml-2" />
+        </button>
+      </div>
+      {/* Invoice Table */}
+      <div className="bg-white rounded-lg shadow mt-5 px-3">
+        <InvoiceTable
+          invoices={filteredInvoices}
+          onDelete={handleDeleteInvoice}
+        />
+      </div>
+
+      <CreateInvoiceModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSubmit={handleCreateInvoice}
+      />
     </div>
   );
 }

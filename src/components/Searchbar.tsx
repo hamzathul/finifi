@@ -25,7 +25,7 @@ const Searchbar: React.FC<SearchBarProps> = ({ onSearch }) => {
   };
 
   return (
-    <div className="flex-1 max-w-sm pt-5 px-3">
+    <div className="flex-1 max-w-sm ">
       <div className="flex border rounded-lg">
         {/* Search Filter Dropdown */}
         <div className="relative">
