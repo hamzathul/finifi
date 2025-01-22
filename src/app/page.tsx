@@ -1,6 +1,7 @@
 "use client";
 import Header from "@/components/Header";
 import Navbar from "@/components/Navbar";
+import Searchbar from "@/components/Searchbar";
 import { Invoice } from "@/types/invoice";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -8,7 +9,12 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [filteredInvoices, setFilteredInvoices] = useState<Invoice[]>([]);
+
   const [selectedStatus, setSelectedStatus] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFilter, setSearchFilter] = useState<
+    "vendorName" | "invoiceNumber"
+  >("vendorName");
 
   useEffect(() => {
     const sampleInvoices: Invoice[] = [
@@ -28,6 +34,7 @@ export default function Home() {
       // Add more sample invoices as needed
     ];
     setInvoices(sampleInvoices);
+    setFilteredInvoices(sampleInvoices);
   }, []);
 
   useEffect(() => {
@@ -39,8 +46,28 @@ export default function Home() {
       );
     }
 
+    // Filter by search query
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter((invoice) => {
+        if (searchFilter === "vendorName") {
+          return invoice.vendorName.toLowerCase().includes(query);
+        } else {
+          return invoice.invoiceNumber.toLowerCase().includes(query);
+        }
+      });
+    }
+
     setFilteredInvoices(filtered);
-  }, [selectedStatus, invoices]);
+  }, [invoices, selectedStatus, searchQuery, searchFilter]);
+
+  const handleSearch = (
+    query: string,
+    filter: "vendorName" | "invoiceNumber"
+  ) => {
+    setSearchQuery(query);
+    setSearchFilter(filter);
+  };
 
   return (
     <div className="">
@@ -49,6 +76,8 @@ export default function Home() {
         selectedStatus={selectedStatus}
         onStatusChange={setSelectedStatus}
       />
+      <Searchbar onSearch={handleSearch} />
+      
     </div>
   );
 }
