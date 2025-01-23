@@ -3,9 +3,9 @@ import dbConnect from "@/lib/dbConnect";
 
 export async function DELETE(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await context.params;
+  const { id } = await params;
 
   try {
     await dbConnect();
@@ -26,9 +26,9 @@ export async function DELETE(
 
 export async function PUT(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } =await context.params;
+  const { id } = await params;
   const updateData = await request.json();
 
   try {

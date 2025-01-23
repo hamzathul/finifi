@@ -103,8 +103,9 @@ export default function Home() {
   const handleUpdateInvoice = async (updatedInvoice: Partial<Invoice>) => {
     try {
       setLoading(true);
+      const id = updatedInvoice._id
       const response = await axios.put(
-        `/api/invoices/${updatedInvoice._id}`,
+        `/api/invoices/${id}`,
         updatedInvoice
       );
       setInvoices((prev) =>
