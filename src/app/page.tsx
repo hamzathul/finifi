@@ -10,6 +10,7 @@ import InvoiceTable from "@/components/InvoiceTable";
 import axios from "axios";
 import { ObjectId } from "mongoose";
 import UpdateInvoiceModal from "@/components/UpdateInvoiceModal";
+import toast from "react-hot-toast";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -81,7 +82,9 @@ export default function Home() {
       setLoading(true);
       const response = await axios.post("/api/invoices", newInvoice);
       setInvoices((prev) => [...prev, response.data]);
+      toast.success("Successfully created !")
     } catch (error) {
+      toast.error("Something went wrong !")
       console.error("Error creating invoice:", error);
     } finally {
       setLoading(false);
@@ -93,7 +96,9 @@ export default function Home() {
       setLoading(true);
       await axios.delete(`/api/invoices/${id}`);
       setInvoices((prev) => prev.filter((invoice) => invoice._id !== id));
+      toast.success("Successfully deleted !");
     } catch (error) {
+      toast.error("Something went wrong !");
       console.error("Error deleting invoice:", error);
     } finally {
       setLoading(false);
@@ -103,17 +108,16 @@ export default function Home() {
   const handleUpdateInvoice = async (updatedInvoice: Partial<Invoice>) => {
     try {
       setLoading(true);
-      const id = updatedInvoice._id
-      const response = await axios.put(
-        `/api/invoices/${id}`,
-        updatedInvoice
-      );
+      const id = updatedInvoice._id;
+      const response = await axios.put(`/api/invoices/${id}`, updatedInvoice);
       setInvoices((prev) =>
         prev.map((invoice) =>
           invoice._id === updatedInvoice._id ? response.data : invoice
         )
       );
+      toast.success("Successfully updated!");
     } catch (error) {
+      toast.error("Something went wrong !");
       console.error("Error updating invoice:", error);
     } finally {
       setLoading(false);

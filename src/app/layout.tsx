@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import {Toaster} from 'react-hot-toast'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,6 +43,7 @@ export default function RootLayout({
                   <div className="lg:col-span-10">{children}</div>
                 </div>
               </div>
+              <Toaster/>
             </main>
           </div>
         </AppRouterCacheProvider>
