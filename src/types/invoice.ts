@@ -15,8 +15,8 @@ export interface Invoice {
   invoiceNumber: string;
   status: InvoiceStatus;
   netAmount: number;
-  invoiceDate: string;
-  dueDate: string;
+  invoiceDate: Date;
+  dueDate: Date;
   department: string;
   costCenter: string;
   poNumber: string;

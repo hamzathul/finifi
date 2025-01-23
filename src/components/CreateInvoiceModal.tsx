@@ -27,15 +27,15 @@ const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
   onSubmit,
 }) => {
   const [formData, setFormData] = useState<{
-    vendorName: string;
-    invoiceNumber: string;
-    status: InvoiceStatus;
-    netAmount: string;
-    invoiceDate: string | null;
-    dueDate: string | null;
-    department: string;
-    costCenter: string;
-    poNumber: string;
+    vendorName: any;
+    invoiceNumber: any;
+    status: any;
+    netAmount: any;
+    invoiceDate: any;
+    dueDate: any;
+    department: any;
+    costCenter: any;
+    poNumber: any;
   }>({
     vendorName: "",
     invoiceNumber: "",
@@ -50,6 +50,7 @@ const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(formData)
     onSubmit({
       ...formData,
       netAmount: Number(formData.netAmount),
@@ -58,6 +59,17 @@ const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
       createdAt: new Date().toISOString(),
     });
     onClose();
+    setFormData({
+      vendorName: "",
+      invoiceNumber: "",
+      status: "Open",
+      netAmount: "",
+      invoiceDate: null,
+      dueDate: null,
+      department: "",
+      costCenter: "",
+      poNumber: "",
+    });
   };
 
   return (
@@ -90,7 +102,7 @@ const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    status: e.target.value as InvoiceStatus,
+                    status: e.target.value,
                   })
                 }
               >

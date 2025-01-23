@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CreateInvoiceModal from "@/components/CreateInvoiceModal";
 import InvoiceTable from "@/components/InvoiceTable";
+import axios from "axios";
+
 
 export default function Home() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -22,24 +24,34 @@ export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    const sampleInvoices: Invoice[] = [
-      {
-        id: "1",
-        vendorName: "Volopay Pvt. Ltd.",
-        invoiceNumber: "INV0001",
-        status: "Open",
-        netAmount: 2930.0,
-        invoiceDate: "2024-03-18",
-        dueDate: "2024-04-28",
-        department: "Marketing",
-        costCenter: "Bangalore",
-        poNumber: "PO001",
-        createdAt: "2024-04-28",
-      },
-      // Add more sample invoices as needed
-    ];
-    setInvoices(sampleInvoices);
-    setFilteredInvoices(sampleInvoices);
+    // const sampleInvoices: Invoice[] = [
+    //   {
+    //     id: "1",
+    //     vendorName: "Volopay Pvt. Ltd.",
+    //     invoiceNumber: "INV0001",
+    //     status: "Open",
+    //     netAmount: 2930.0,
+    //     invoiceDate: "2024-03-18",
+    //     dueDate: "2024-04-28",
+    //     department: "Marketing",
+    //     costCenter: "Bangalore",
+    //     poNumber: "PO001",
+    //     createdAt: "2024-04-28",
+    //   },
+    //   // Add more sample invoices as needed
+    // ];
+
+    const fetchInvoices = async () => {
+      const response = await axios.get("/api/invoices");
+      console.log(response.data)
+      setInvoices(response.data);
+      setFilteredInvoices(response.data);
+    };
+
+    fetchInvoices();
+
+    // setInvoices(sampleInvoices);
+    // setFilteredInvoices(sampleInvoices);
   }, []);
 
   useEffect(() => {
@@ -74,12 +86,10 @@ export default function Home() {
     setSearchFilter(filter);
   };
 
-  const handleCreateInvoice = (newInvoice: Omit<Invoice, "id">) => {
-    const invoiceWithId = {
-      ...newInvoice,
-      id: Math.random().toString(36).substr(2, 9), // Generate random ID (replace with proper ID generation)
-    };
-    setInvoices((prev) => [...prev, invoiceWithId]);
+  const handleCreateInvoice = async(newInvoice: Omit<Invoice, "id">) => {
+    console.log(newInvoice)
+    const response = await axios.post("/api/invoices", newInvoice);
+    setInvoices((prev) => [...prev, response.data]);
   };
 
   const handleDeleteInvoice = (id: string) => {

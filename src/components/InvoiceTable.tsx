@@ -5,7 +5,7 @@ import { Invoice } from "@/types/invoice";
 interface InvoiceTableProps {
   invoices: Invoice[];
   loading?: boolean;
-  onDelete: (id: string) => void; 
+  onDelete: (id: string) => void;
 }
 
 const InvoiceTable: React.FC<InvoiceTableProps> = ({
@@ -20,7 +20,7 @@ const InvoiceTable: React.FC<InvoiceTableProps> = ({
       field: "status",
       headerName: "Status",
       flex: 1,
-      renderCell: (params:any) => (
+      renderCell: (params: any) => (
         <div
           className={`px-3 py-2 mt-1 rounded-full text-sm ${getStatusColor(
             params.value
@@ -34,21 +34,28 @@ const InvoiceTable: React.FC<InvoiceTableProps> = ({
       field: "netAmount",
       headerName: "Net Amount",
       flex: 1,
-      renderCell: (params:any) => <div>₹{params.value.toLocaleString()}</div>,
+      renderCell: (params: any) => <div>₹{params.value.toLocaleString()}</div>,
     },
     {
       field: "invoiceDate",
       headerName: "Invoice Date",
       flex: 1,
-      valueFormatter: (params:any) =>
-        new Date(params?.value).toLocaleDateString(),
+
+      valueFormatter: (params: string) => {
+        const date = new Date(params);
+        const formattedDate = date.toLocaleDateString("en-GB"); // 'en-GB' uses the format dd/mm/yyyy
+        return formattedDate.replace(/\//g, "-"); // Replace slashes with dashes
+      },
     },
     {
       field: "dueDate",
       headerName: "Due Date",
       flex: 1,
-      valueFormatter: (params:any) =>
-        new Date(params.value).toLocaleDateString(),
+      valueFormatter: (params: string) => {
+        const date = new Date(params);
+        const formattedDate = date.toLocaleDateString("en-GB"); // 'en-GB' uses the format dd/mm/yyyy
+        return formattedDate.replace(/\//g, "-"); // Replace slashes with dashes
+      },
     },
     { field: "department", headerName: "Department", flex: 1 },
     { field: "costCenter", headerName: "Cost Center", flex: 1 },
@@ -94,6 +101,7 @@ const InvoiceTable: React.FC<InvoiceTableProps> = ({
         }}
         checkboxSelection
         disableRowSelectionOnClick
+        getRowId={(row) => row._id}
       />
     </div>
   );
