@@ -111,6 +111,10 @@ const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
                 <MenuItem value="Approved">Approved</MenuItem>
                 <MenuItem value="Processing">Processing</MenuItem>
                 <MenuItem value="Paid">Paid</MenuItem>
+                <MenuItem value="Rejected">Rejected</MenuItem>
+                <MenuItem value="Vendor not found">Vendor not found</MenuItem>
+                <MenuItem value="Duplicate">Duplicate</MenuItem>
+                <MenuItem value="Void">Void</MenuItem>
               </Select>
             </FormControl>
             <TextField

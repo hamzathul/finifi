@@ -23,7 +23,7 @@ const InvoiceTable: React.FC<InvoiceTableProps> = ({
       flex: 1,
       renderCell: (params: any) => (
         <div
-          className={`px-3 py-2 mt-1 rounded-full text-sm ${getStatusColor(
+          className={`px-3 py-2 mt-1 rounded-full text-sm text-center ${getStatusColor(
             params.value
           )}`}
         >
