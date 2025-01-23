@@ -18,7 +18,7 @@ import { Invoice, InvoiceStatus } from "@/types/invoice";
 interface CreateInvoiceModalProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (invoice: Omit<Invoice, "id">) => void;
+  onSubmit: (invoice: Partial<Invoice>) => void;
 }
 
 const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({

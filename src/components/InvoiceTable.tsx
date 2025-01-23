@@ -1,11 +1,12 @@
 import React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Invoice } from "@/types/invoice";
+import { ObjectId } from "mongoose";
 
 interface InvoiceTableProps {
   invoices: Invoice[];
   loading?: boolean;
-  onDelete: (id: string) => void;
+  onDelete: (id: ObjectId) => void;
 }
 
 const InvoiceTable: React.FC<InvoiceTableProps> = ({
@@ -65,7 +66,7 @@ const InvoiceTable: React.FC<InvoiceTableProps> = ({
       flex: 1,
       renderCell: (params) => (
         <button
-          onClick={() => onDelete(params.row.id)} // Call onDelete with the row id
+          onClick={() => onDelete(params.row._id)} // Call onDelete with the row id
           className="text-red-600 hover:text-red-800"
         >
           Delete

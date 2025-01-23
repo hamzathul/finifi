@@ -1,3 +1,5 @@
+import { ObjectId } from "mongoose";
+
 export type InvoiceStatus =
   | "Open"
   | "Awaiting Approval"
@@ -10,7 +12,7 @@ export type InvoiceStatus =
   | "Void";
 
 export interface Invoice {
-  id: string;
+  _id: ObjectId;
   vendorName: string;
   invoiceNumber: string;
   status: InvoiceStatus;

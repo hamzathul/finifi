@@ -9,6 +9,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CreateInvoiceModal from "@/components/CreateInvoiceModal";
 import InvoiceTable from "@/components/InvoiceTable";
 import axios from "axios";
+import { ObjectId } from "mongoose";
 
 
 export default function Home() {
@@ -86,14 +87,16 @@ export default function Home() {
     setSearchFilter(filter);
   };
 
-  const handleCreateInvoice = async(newInvoice: Omit<Invoice, "id">) => {
+  const handleCreateInvoice = async(newInvoice: Partial<Invoice>) => {
     console.log(newInvoice)
     const response = await axios.post("/api/invoices", newInvoice);
     setInvoices((prev) => [...prev, response.data]);
   };
 
-  const handleDeleteInvoice = (id: string) => {
-    setInvoices((prev) => prev.filter((invoice) => invoice.id !== id));
+  const handleDeleteInvoice = async(id: ObjectId) => {
+    console.log(id)
+    await axios.delete(`/api/invoices/${id}`);
+    setInvoices((prev) => prev.filter((invoice) => invoice._id !== id));
   };
 
   return (
@@ -117,6 +120,7 @@ export default function Home() {
       <div className="bg-white rounded-lg shadow mt-5 px-3">
         <InvoiceTable
           invoices={filteredInvoices}
+          // loading={true}
           onDelete={handleDeleteInvoice}
         />
       </div>
