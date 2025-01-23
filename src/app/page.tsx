@@ -10,7 +10,7 @@ import CreateInvoiceModal from "@/components/CreateInvoiceModal";
 import InvoiceTable from "@/components/InvoiceTable";
 import axios from "axios";
 import { ObjectId } from "mongoose";
-
+import UpdateInvoiceModal from "@/components/UpdateInvoiceModal";
 
 export default function Home() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -23,6 +23,8 @@ export default function Home() {
   >("vendorName");
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
 
   useEffect(() => {
     // const sampleInvoices: Invoice[] = [
@@ -44,7 +46,7 @@ export default function Home() {
 
     const fetchInvoices = async () => {
       const response = await axios.get("/api/invoices");
-      console.log(response.data)
+      console.log(response.data);
       setInvoices(response.data);
       setFilteredInvoices(response.data);
     };
@@ -87,16 +89,33 @@ export default function Home() {
     setSearchFilter(filter);
   };
 
-  const handleCreateInvoice = async(newInvoice: Partial<Invoice>) => {
-    console.log(newInvoice)
+  const handleCreateInvoice = async (newInvoice: Partial<Invoice>) => {
+    console.log(newInvoice);
     const response = await axios.post("/api/invoices", newInvoice);
     setInvoices((prev) => [...prev, response.data]);
   };
 
-  const handleDeleteInvoice = async(id: ObjectId) => {
-    console.log(id)
+  const handleDeleteInvoice = async (id: ObjectId) => {
+    console.log(id);
     await axios.delete(`/api/invoices/${id}`);
     setInvoices((prev) => prev.filter((invoice) => invoice._id !== id));
+  };
+
+  const handleUpdateInvoice = async (updatedInvoice: Partial<Invoice>) => {
+    const response = await axios.put(
+      `/api/invoices/${updatedInvoice._id}`,
+      updatedInvoice
+    );
+    setInvoices((prev) =>
+      prev.map((invoice) =>
+        invoice._id === updatedInvoice._id ? response.data : invoice
+      )
+    );
+  };
+
+  const handleUpdateClick = (invoice: Invoice) => {
+    setSelectedInvoice(invoice);
+    setUpdateModalOpen(true);
   };
 
   return (
@@ -122,6 +141,8 @@ export default function Home() {
           invoices={filteredInvoices}
           // loading={true}
           onDelete={handleDeleteInvoice}
+          //@ts-ignore
+          onUpdate={handleUpdateClick}
         />
       </div>
 
@@ -129,6 +150,12 @@ export default function Home() {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         onSubmit={handleCreateInvoice}
+      />
+      <UpdateInvoiceModal
+        open={updateModalOpen}
+        onClose={() => setUpdateModalOpen(false)}
+        onSubmit={handleUpdateInvoice}
+        invoice={selectedInvoice}
       />
     </div>
   );

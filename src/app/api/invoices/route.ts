@@ -46,16 +46,3 @@ export async function POST(request: Request) {
   }
 }
 
-// export async function DELETE(
-//   request: Request,
-//   { params }: { params: { id: string } }
-// ) {
-//   try {
-//     await dbConnect();
-//     const deletedInvoice = await Invoice.findByIdAndDelete(params.id);
-//     return Response.json(deletedInvoice, { status: 200 });
-//   } catch (error) {
-//     console.log(error);
-//     return Response.json(error, { status: 500 });
-//   }
-// }

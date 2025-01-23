@@ -7,20 +7,22 @@ interface InvoiceTableProps {
   invoices: Invoice[];
   loading?: boolean;
   onDelete: (id: ObjectId) => void;
+  onUpdate: (invoice: Partial<Invoice>) => void;
 }
 
 const InvoiceTable: React.FC<InvoiceTableProps> = ({
   invoices,
   loading,
   onDelete,
+  onUpdate,
 }) => {
   const columns: GridColDef[] = [
-    { field: "vendorName", headerName: "Vendor Name", flex:1 },
+    { field: "vendorName", headerName: "Vendor Name", flex: 1 },
     { field: "invoiceNumber", headerName: "Invoice" },
     {
       field: "status",
       headerName: "Status",
-      flex:1,
+      flex: 1,
       renderCell: (params: any) => (
         <div
           className={`px-3 py-2 mt-1 rounded-full text-sm text-center ${getStatusColor(
@@ -58,14 +60,23 @@ const InvoiceTable: React.FC<InvoiceTableProps> = ({
     { field: "costCenter", headerName: "Cost Center" },
     {
       field: "action",
-      headerName: "Action",
+      headerName: "Actions",
+      flex:1,
       renderCell: (params) => (
-        <button
-          onClick={() => onDelete(params.row._id)} // Call onDelete with the row id
-          className="text-red-600 hover:text-red-800"
-        >
-          Delete
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => onUpdate(params.row)}
+            className="text-blue-600 hover:underline hover:text-blue-950"
+          >
+            Update
+          </button>
+          <button
+            onClick={() => onDelete(params.row._id)}
+            className="text-red-600 hover:underline hover:text-red-950"
+          >
+            Delete
+          </button>
+        </div>
       ),
     },
   ];
