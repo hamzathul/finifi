@@ -3,7 +3,6 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 import { Badge } from "@mui/material";
 import Divider from "@mui/material/Divider";
 
-
 const Header = () => {
   return (
     <>
@@ -45,7 +44,7 @@ const Header = () => {
           </div>
         </div>
       </header>
-                <Divider className="pt-3"/>                                            
+      <Divider className="pt-3" />
     </>
   );
 };

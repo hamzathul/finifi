@@ -3,7 +3,6 @@ import Header from "@/components/Header";
 import Navbar from "@/components/Navbar";
 import Searchbar from "@/components/Searchbar";
 import { Invoice } from "@/types/invoice";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CreateInvoiceModal from "@/components/CreateInvoiceModal";
