@@ -15,12 +15,12 @@ const InvoiceTable: React.FC<InvoiceTableProps> = ({
   onDelete,
 }) => {
   const columns: GridColDef[] = [
-    { field: "vendorName", headerName: "Vendor Name", flex: 1 },
-    { field: "invoiceNumber", headerName: "Invoice", flex: 1 },
+    { field: "vendorName", headerName: "Vendor Name", flex:1 },
+    { field: "invoiceNumber", headerName: "Invoice" },
     {
       field: "status",
       headerName: "Status",
-      flex: 1,
+      flex:1,
       renderCell: (params: any) => (
         <div
           className={`px-3 py-2 mt-1 rounded-full text-sm text-center ${getStatusColor(
@@ -34,14 +34,11 @@ const InvoiceTable: React.FC<InvoiceTableProps> = ({
     {
       field: "netAmount",
       headerName: "Net Amount",
-      flex: 1,
       renderCell: (params: any) => <div>₹{params.value.toLocaleString()}</div>,
     },
     {
       field: "invoiceDate",
       headerName: "Invoice Date",
-      flex: 1,
-
       valueFormatter: (params: string) => {
         const date = new Date(params);
         const formattedDate = date.toLocaleDateString("en-GB"); // 'en-GB' uses the format dd/mm/yyyy
@@ -51,19 +48,17 @@ const InvoiceTable: React.FC<InvoiceTableProps> = ({
     {
       field: "dueDate",
       headerName: "Due Date",
-      flex: 1,
       valueFormatter: (params: string) => {
         const date = new Date(params);
         const formattedDate = date.toLocaleDateString("en-GB"); // 'en-GB' uses the format dd/mm/yyyy
         return formattedDate.replace(/\//g, "-"); // Replace slashes with dashes
       },
     },
-    { field: "department", headerName: "Department", flex: 1 },
-    { field: "costCenter", headerName: "Cost Center", flex: 1 },
+    { field: "department", headerName: "Department" },
+    { field: "costCenter", headerName: "Cost Center" },
     {
       field: "action",
       headerName: "Action",
-      flex: 1,
       renderCell: (params) => (
         <button
           onClick={() => onDelete(params.row._id)} // Call onDelete with the row id
