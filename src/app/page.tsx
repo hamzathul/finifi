@@ -13,6 +13,8 @@ import { ObjectId } from "mongoose";
 import UpdateInvoiceModal from "@/components/UpdateInvoiceModal";
 
 export default function Home() {
+  const [loading, setLoading] = useState(true);
+
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [filteredInvoices, setFilteredInvoices] = useState<Invoice[]>([]);
 
@@ -27,34 +29,20 @@ export default function Home() {
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
 
   useEffect(() => {
-    // const sampleInvoices: Invoice[] = [
-    //   {
-    //     id: "1",
-    //     vendorName: "Volopay Pvt. Ltd.",
-    //     invoiceNumber: "INV0001",
-    //     status: "Open",
-    //     netAmount: 2930.0,
-    //     invoiceDate: "2024-03-18",
-    //     dueDate: "2024-04-28",
-    //     department: "Marketing",
-    //     costCenter: "Bangalore",
-    //     poNumber: "PO001",
-    //     createdAt: "2024-04-28",
-    //   },
-    //   // Add more sample invoices as needed
-    // ];
-
     const fetchInvoices = async () => {
-      const response = await axios.get("/api/invoices");
-      console.log(response.data);
-      setInvoices(response.data);
-      setFilteredInvoices(response.data);
+      try {
+        setLoading(true);
+        const response = await axios.get("/api/invoices");
+        setInvoices(response.data);
+        setFilteredInvoices(response.data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchInvoices();
-
-    // setInvoices(sampleInvoices);
-    // setFilteredInvoices(sampleInvoices);
   }, []);
 
   useEffect(() => {
@@ -90,27 +78,46 @@ export default function Home() {
   };
 
   const handleCreateInvoice = async (newInvoice: Partial<Invoice>) => {
-    console.log(newInvoice);
-    const response = await axios.post("/api/invoices", newInvoice);
-    setInvoices((prev) => [...prev, response.data]);
+    try {
+      setLoading(true);
+      const response = await axios.post("/api/invoices", newInvoice);
+      setInvoices((prev) => [...prev, response.data]);
+    } catch (error) {
+      console.error("Error creating invoice:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDeleteInvoice = async (id: ObjectId) => {
-    console.log(id);
-    await axios.delete(`/api/invoices/${id}`);
-    setInvoices((prev) => prev.filter((invoice) => invoice._id !== id));
+    try {
+      setLoading(true);
+      await axios.delete(`/api/invoices/${id}`);
+      setInvoices((prev) => prev.filter((invoice) => invoice._id !== id));
+    } catch (error) {
+      console.error("Error deleting invoice:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleUpdateInvoice = async (updatedInvoice: Partial<Invoice>) => {
-    const response = await axios.put(
-      `/api/invoices/${updatedInvoice._id}`,
-      updatedInvoice
-    );
-    setInvoices((prev) =>
-      prev.map((invoice) =>
-        invoice._id === updatedInvoice._id ? response.data : invoice
-      )
-    );
+    try {
+      setLoading(true);
+      const response = await axios.put(
+        `/api/invoices/${updatedInvoice._id}`,
+        updatedInvoice
+      );
+      setInvoices((prev) =>
+        prev.map((invoice) =>
+          invoice._id === updatedInvoice._id ? response.data : invoice
+        )
+      );
+    } catch (error) {
+      console.error("Error updating invoice:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleUpdateClick = (invoice: Invoice) => {
@@ -139,7 +146,7 @@ export default function Home() {
       <div className="bg-white rounded-lg shadow mt-5 px-3">
         <InvoiceTable
           invoices={filteredInvoices}
-          // loading={true}
+          loading={loading}
           onDelete={handleDeleteInvoice}
           //@ts-ignore
           onUpdate={handleUpdateClick}
