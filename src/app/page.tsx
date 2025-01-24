@@ -32,7 +32,9 @@ export default function Home() {
     const fetchInvoices = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("/api/invoices");
+        const response = await axios.get(
+          "https://finifi-backend.vercel.app/api/invoices"
+        );
         setInvoices(response.data);
         setFilteredInvoices(response.data);
       } catch (error) {
@@ -80,7 +82,10 @@ export default function Home() {
   const handleCreateInvoice = async (newInvoice: Partial<Invoice>) => {
     try {
       setLoading(true);
-      const response = await axios.post("/api/invoices", newInvoice);
+      const response = await axios.post(
+        "https://finifi-backend.vercel.app/api/invoices",
+        newInvoice
+      );
       setInvoices((prev) => [...prev, response.data]);
       toast.success("Successfully created !")
     } catch (error) {
@@ -94,7 +99,7 @@ export default function Home() {
   const handleDeleteInvoice = async (id: ObjectId) => {
     try {
       setLoading(true);
-      await axios.delete(`/api/invoices/${id}`);
+      await axios.delete(`https://finifi-backend.vercel.app/api/invoices/${id}`);
       setInvoices((prev) => prev.filter((invoice) => invoice._id !== id));
       toast.success("Successfully deleted !");
     } catch (error) {
@@ -109,7 +114,10 @@ export default function Home() {
     try {
       setLoading(true);
       const id = updatedInvoice._id;
-      const response = await axios.put(`/api/invoices/${id}`, updatedInvoice);
+      const response = await axios.put(
+        `https://finifi-backend.vercel.app/api/invoices/${id}`,
+        updatedInvoice
+      );
       setInvoices((prev) =>
         prev.map((invoice) =>
           invoice._id === updatedInvoice._id ? response.data : invoice
